@@ -13,25 +13,22 @@ var pokeTextLookup = document.getElementById("userInput")
 
 const handleError = response => {
     if (!response.ok) { 
-       throw Error(response.statusText);
+        // get error message from body or default to response status
+        const error = response.status;
+        return Promise.reject(error);
     } else {
-       return response.json();
+        return response.json();
     }
  }; //handler function that throws any encountered error
 
 function myFunction() {
+    const element = document.querySelector("h1");
     //get the data from the url / api
     fetch('https://pokeapi.co/api/v2/pokemon/' + pokeTextLookup.value)
 
     .then(handleError) // skips to .catch if error is thrown
-
-    // use .then to handle the response/reject promise
-    // .then((res)=>{
-    //     return res.json()
-    // })
     
     .then((data)=>{
-       // console.log("data:  " + data)
         if(data.types.length>1){
             pokeType.textContent="Type: " + data.types[0].type.name + " and " + data.types[1].type.name
         }
@@ -46,7 +43,6 @@ function myFunction() {
             pokeAbility2.textContent = 'Ability 2: None'
         }
 
-        console.log(data.name)
         pokeName.textContent = "Pokemon Name: " + data.name
         pokeNum.textContent = "Pokemon ID: " + data.id
         pokeWeight.textContent = "Pokemon Weight: " + (data.weight)/10 + " Kilograms"
@@ -56,10 +52,16 @@ function myFunction() {
         backPoke.setAttribute("src", `${data.sprites.back_default}`)
     })
 
-    // .catch(console.log); // catches the error and logs it
-
     .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
+        element.innerHTML = `Pokemon Name: Error ${error} Data Undefined`;
+        pokeType.textContent="Type: "
+        pokeNum.textContent = "Pokemon ID: " 
+        pokeWeight.textContent = "Pokemon Weight: "
+        pokeHeight.textContent = "Pokemon Height: "
+        pokeAbility1.textContent = "Ability 1: "
+        pokeAbility2.textContent = "Ability 2: "
+        frontPoke.setAttribute("src", "")
+        backPoke.setAttribute("src", "")    
     });
 
 }  // End of my function
