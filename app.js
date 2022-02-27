@@ -9,17 +9,16 @@ var pokeAbility2 = document.getElementById("pokeAbility2")
 var frontPoke = document.getElementById("frontPoke")
 var backPoke = document.getElementById("backPoke")
 var pokeTextLookup = document.getElementById("userInput")
-//console.log("User Input = " + pokeTextLookup.value)
 
-const handleError = response => {
-    if (!response.ok) { 
+function handleError(response) {
+    if (!response.ok) {
         // get error message from body or default to response status
-        const error = response.status;
-        return Promise.reject(error);
+        const error =  response.status
+        return Promise.reject(error)
     } else {
-        return response.json();
+        return response.json()
     }
- }; //handler function that throws any encountered error
+} //handler function that throws any encountered error
 
 function myFunction() {
     const element = document.querySelector("h1");
@@ -48,20 +47,27 @@ function myFunction() {
         pokeWeight.textContent = "Pokemon Weight: " + (data.weight)/10 + " Kilograms"
         pokeHeight.textContent = "Pokemon Height: " + (data.height)*10 + " Centimeters"
         pokeAbility1.textContent = "Ability 1: " + `${data.abilities[0].ability.name}`
+        frontPoke.style.visibility = 'visible'
+        backPoke.style.visibility = 'visible'
         frontPoke.setAttribute("src", `${data.sprites.front_default}`)
-        backPoke.setAttribute("src", `${data.sprites.back_default}`)
+        if (data.sprites.back_default != null){
+            backPoke.setAttribute("src", `${data.sprites.back_default}`)
+        }
+        else{
+            backPoke.style.visibility = 'hidden'            
+        }
     })
 
     .catch(error => {
-        element.innerHTML = `Pokemon Name: Error ${error} Data Undefined`;
+        element.innerHTML = `HTTP ${error} Invalid Pokemon Name or Number`;
         pokeType.textContent="Type: "
         pokeNum.textContent = "Pokemon ID: " 
         pokeWeight.textContent = "Pokemon Weight: "
         pokeHeight.textContent = "Pokemon Height: "
         pokeAbility1.textContent = "Ability 1: "
         pokeAbility2.textContent = "Ability 2: "
-        frontPoke.setAttribute("src", "")
-        backPoke.setAttribute("src", "")    
+        frontPoke.style.visibility = 'hidden'
+        backPoke.style.visibility = 'hidden' 
     });
 
 }  // End of my function

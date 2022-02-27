@@ -5,10 +5,17 @@ body{
 
 #traits{
     background-color: lightseagreen;
+    margin-top: 150px;
 }
 
 #pics{
     background-color: whitesmoke;
     width: 20%;
-    margin-top: 30px;
+    margin-bottom: 50px;
 }
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+  }
